@@ -19,20 +19,4 @@ graph TD
     C --> D{Evaluator Agent}
     D -- Score < 0.85 (Feedback) --> C
     D -- Score >= 0.85 --> E[High-Quality SFT Data]
-# 核心调用伪代码展示
-from agents import Retriever, Synthesizer, Evaluator
-
-def data_generation_pipeline(raw_doc):
-    seed = Retriever.extract_seed(raw_doc)
-    draft = Synthesizer.generate_cot(seed)
-    
-    # Self-Refine Loop
-    max_retries = 3
-    for _ in range(max_retries):
-        score, feedback = Evaluator.assess(draft)
-        if score >= 0.85:
-            return draft
-        draft = Synthesizer.rewrite(draft, feedback)
-        
-    return None # Drop low quality data
     
